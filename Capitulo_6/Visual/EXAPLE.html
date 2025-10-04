@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Comparativa de Algoritmos de Ordenamiento</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#06b6d4; --good:#10b981; --bad:#ef4444;
+      --glass: rgba(255,255,255,0.03);
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{background:linear-gradient(180deg,#071028 0%, #061226 100%); margin:0; padding:32px; color:#e6eef6}
+    .container{max-width:1100px; margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted)}
+
+    .card{background:var(--card); padding:18px; border-radius:12px; box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+
+    .controls{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+    select, button{background:var(--glass); border:1px solid rgba(255,255,255,0.04); color:inherit; padding:8px 10px; border-radius:8px}
+
+    table{width:100%; border-collapse:collapse; font-size:14px}
+    thead th{ text-align:left; padding:12px 10px; font-weight:600; color:#dbeafe; border-bottom:1px solid rgba(255,255,255,0.04)}
+    tbody td{padding:12px 10px; vertical-align:top; border-bottom:1px dashed rgba(255,255,255,0.02)}
+
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px;font-weight:600}
+    .small{font-size:12px;color:var(--muted)}
+
+    .tag-slow{background:rgba(239,68,68,0.12); color:var(--bad)}
+    .tag-fast{background:rgba(16,185,129,0.08); color:var(--good)}
+    .tag-medium{background:rgba(6,182,212,0.08); color:var(--accent)}
+
+    .col-time{width:18%}
+    .col-size{width:18%}
+    .col-type{width:22%}
+
+    footer{margin-top:12px;color:var(--muted);font-size:13px}
+
+    /* responsive */
+    @media (max-width:820px){
+      thead{display:none}
+      table, tbody, tr, td{display:block;width:100%}
+      tr{margin-bottom:12px}
+      td{padding:8px; border-bottom:none}
+      td::before{content:attr(data-label); display:block; font-weight:600; margin-bottom:4px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <rect width="24" height="24" rx="6" fill="#08203a"></rect>
+        <path d="M6 16h12M6 12h12M6 8h12" stroke="#06b6d4" stroke-width="1.2" stroke-linecap="round"></path>
+      </svg>
+      <div>
+        <h1>Comparativa de Algoritmos de Ordenamiento</h1>
+        <p class="lead">Incluye complejidades, tiempos aproximados y recomendaciones de uso.</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="controls">
+        <label class="small">Tamaño de entrada:</label>
+        <select id="inputSize">
+          <option value="50">Pequeña — 50 elementos</option>
+          <option value="500">Mediana — 500 elementos</option>
+          <option value="5000">Grande — 5,000 elementos</option>
+        </select>
+        <button id="toggleStable">Alternar: Mostrar estabilidad</button>
+        <div style="flex:1"></div>
+        <span class="small">Made for: ALEHACK (Docente, Alexander Santamaria))</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Algoritmo</th>
+            <th class="col-time">Complejidad (mejor / promedio / peor)</th>
+            <th class="col-time">Tiempo approx. (ejemplo)</th>
+            <th class="col-size">Listas recomendadas</th>
+            <th class="col-type">Tipo de datos y uso real</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td data-label="Algoritmo"><strong>Bubble Sort</strong><div class="small">(Intercambio simple)</div></td>
+            <td data-label="Complejidad">O(n) / O(n²) / O(n²)</td>
+            <td data-label="Tiempo" class="time-cell">—</td>
+            <td data-label="Listas">Cortas (≤ 20)</td>
+            <td data-label="Tipo">Didáctico, arrays pequeños; funciona con cualquier tipo comparable</td>
+          </tr>
+
+          <tr>
+            <td data-label="Algoritmo"><strong>Insertion Sort</strong><div class="small">(Insertar en sublista)</div></td>
+            <td data-label="Complejidad">O(n) / O(n²) / O(n²)</td>
+            <td data-label="Tiempo" class="time-cell">—</td>
+            <td data-label="Listas">Cortas / casi ordenadas</td>
+            <td data-label="Tipo">Ideal para listas parcialmente ordenadas; estable; útil en arreglos pequeños y como subrutina</td>
+          </tr>
+
+          <tr>
+            <td data-label="Algoritmo"><strong>Timsort (ordenamiento por función)</strong><div class="small">(Python: sorted()/list.sort())</div></td>
+            <td data-label="Complejidad">O(n) / O(n log n) / O(n log n)</td>
+            <td data-label="Tiempo" class="time-cell">—</td>
+            <td data-label="Listas">Corta, mediana y grande</td>
+            <td data-label="Tipo">Excelente para casi todo; estable; muy optimizado en Python; usa runs naturales</td>
+          </tr>
+
+          <tr>
+            <td data-label="Algoritmo"><strong>Quicksort</strong><div class="small">(Divide y vencerás)</div></td>
+            <td data-label="Complejidad">O(n log n) / O(n log n) / O(n²)</td>
+            <td data-label="Tiempo" class="time-cell">—</td>
+            <td data-label="Listas">Medianas y grandes</td>
+            <td data-label="Tipo">Muy rápido en la práctica; inestable por defecto; sensible al pivote</td>
+          </tr>
+
+          <tr>
+            <td data-label="Algoritmo"><strong>Mergesort</strong><div class="small">(División y mezcla)</div></td>
+            <td data-label="Complejidad">O(n log n) / O(n log n) / O(n log n)</td>
+            <td data-label="Tiempo" class="time-cell">—</td>
+            <td data-label="Listas">Grandes</td>
+            <td data-label="Tipo">Estable; requiere memoria adicional; buen rendimiento consistente</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <footer>
+        <div id="note">Seleccione un tamaño de entrada para ver tiempos aproximados (valores ilustrativos, dependen de la máquina y la implementación).</div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const sizes = {
+      50: {
+        bubble: '≈ 0.005 ms',
+        insertion: '≈ 0.002 ms',
+        timsort: '≈ 0.020 ms',
+        quick: '≈ 0.015 ms',
+        merge: '≈ 0.025 ms'
+      },
+      500: {
+        bubble: '≈ 0.5 ms',
+        insertion: '≈ 0.2 ms',
+        timsort: '≈ 1.6 ms',
+        quick: '≈ 1.1 ms',
+        merge: '≈ 1.8 ms'
+      },
+      5000: {
+        bubble: '≈ 50 ms',
+        insertion: '≈ 20 ms',
+        timsort: '≈ 160 ms',
+        quick: '≈ 110 ms',
+        merge: '≈ 180 ms'
+      }
+    };
+
+    const tbody = document.getElementById('tbody');
+    const sel = document.getElementById('inputSize');
+    const toggle = document.getElementById('toggleStable');
+    let showStable = true;
+
+    function updateTimes(){
+      const s = sel.value;
+      const vals = sizes[s];
+      const cells = document.querySelectorAll('.time-cell');
+      // order must match table rows
+      const times = [vals.bubble, vals.insertion, vals.timsort, vals.quick, vals.merge];
+      cells.forEach((c,i)=> c.textContent = times[i]);
+      document.getElementById('note').textContent = `Tiempos aproximados para ${s} elementos — valores ilustrativos en una máquina moderna. (No son mediciones exactas).`;
+    }
+
+    toggle.addEventListener('click', ()=>{
+      showStable = !showStable;
+      // update the "Tipo de datos" column to mention stability
+      const rows = tbody.querySelectorAll('tr');
+      const texts = [
+        'Didáctico, arrays pequeños; funciona con cualquier tipo comparable',
+        'Ideal para listas parcialmente ordenadas; estable; útil en arreglos pequeños y como subrutina',
+        showStable ? 'Excelente para casi todo; <strong>estable</strong>; muy optimizado en Python; usa runs naturales' : 'Excelente para casi todo; estable; muy optimizado en Python; usa runs naturales',
+        showStable ? 'Muy rápido en la práctica; <strong>inestable</strong> por defecto; sensible al pivote' : 'Muy rápido en la práctica; inestable por defecto; sensible al pivote',
+        'Estable; requiere memoria adicional; buen rendimiento consistente'
+      ];
+      rows.forEach((r,i)=> r.cells[4].innerHTML = texts[i]);
+      toggle.textContent = showStable ? 'Alternar: Mostrar estabilidad' : 'Alternar: Ocultar estabilidad';
+    });
+
+    sel.addEventListener('change', updateTimes);
+    // inicial
+    updateTimes();
+  </script>
+</body>
+</html>
